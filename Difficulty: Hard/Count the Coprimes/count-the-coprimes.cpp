@@ -1,5 +1,13 @@
 class Solution {
   public:
+  /**
+   * CoprimePairs= 
+   * max(arr)
+   *  ∑       μ(k)⋅(d[k]⋅(d[k]−1)) / 2
+   * k = 1
+ 
+
+  */
    // Computes the Möbius function up to 'n'
     void computeMobius(int n, vector<int>& mu) {
         vector<int> is_prime(n + 1, 1);
