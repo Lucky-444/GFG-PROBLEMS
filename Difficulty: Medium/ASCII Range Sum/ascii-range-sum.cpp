@@ -1,33 +1,38 @@
 class Solution {
-  public:
+public:
     vector<int> asciirange(string& s) {
-        // code here
         int n = s.size();
-        unordered_map<char,int> first,last;
-        int sum = 0;
-        for(int i = 0;i<n;i++)
-        {
-            sum += s[i];
-            if(first.find(s[i]) == first.end())
-            {
-                first[s[i]] = sum;
+        unordered_map<char, pair<int, int>> mp;  // {first_index, last_index}
+
+        for (int i = 0; i < n; ++i) {
+            if (mp.find(s[i]) == mp.end()) {
+                mp[s[i]].first = i;
             }
-            else
-            {
-                last[s[i]] = sum;
-            }
+            mp[s[i]].second = i;
         }
-        
+
+        // Build prefix sum vector
+        vector<int> prefix(n + 1, 0);
+        for (int i = 0; i < n; ++i) {
+            prefix[i + 1] = prefix[i] + s[i];  // ASCII value
+        }
+
         vector<int> ans;
-        for(char c = 'a';c<='z';c++)
-        {
-            if(last.find(c) != last.end())
-            {
-                int tem = (last[c] - first[c] - c);
-                if(tem>0)
-                ans.push_back(tem);
+        for (char c = 'a'; c <= 'z'; ++c) {
+            if (mp.find(c) != mp.end()) {
+                int l = mp[c].first;
+                int r = mp[c].second;
+                
+                
+                if (l != r) { // only if character occurs more than once
+                    int range_sum = prefix[r] - prefix[l + 1];
+                    int val = range_sum ;
+                    if (val > 0)
+                        ans.push_back(val);
+                }
             }
         }
+
         return ans;
     }
 };
