@@ -22,8 +22,8 @@ class Solution {
         if (k > arr.size()) return -1 ;//impossiible to give books to the students
         int ans = -1;
         
-        int low = *max_element(arr.begin() , arr.end());
-        int high = accumulate(arr.begin() , arr.end()  ,0) ;
+        int low = 1;
+        int high = 1e9 ;
         
         while(low <= high){
             int mid = (low + high) >> 1;
