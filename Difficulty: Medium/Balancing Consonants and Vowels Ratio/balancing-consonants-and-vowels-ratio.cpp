@@ -34,7 +34,9 @@ class Solution {
         for(int i = 0; i < vec.size(); i++){
             sum += vec[i];
             
-            ans += mp[sum];
+            if(mp.find(sum) != mp.end()){
+                ans += mp[sum];
+            }
             
             mp[sum]++;
         }
