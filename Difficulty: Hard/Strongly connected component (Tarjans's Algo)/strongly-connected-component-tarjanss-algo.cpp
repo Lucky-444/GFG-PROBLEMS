@@ -2,59 +2,79 @@
 
 class Solution {
   public:
-    // Function to return a list of lists of integers denoting the members
-    // of strongly connected components in the given graph.
+    vector<vector<int>> ans;   // stores all SCCs
+    vector<int> disc, low;     // discovery time and lowest reachable time
+    int timeCounter = 0;
 
- void dfs(int node, vector<int>& visited, vector<int>adj[],stack<int>& st) {
-        visited[node] = 1;
-        for(auto it: adj[node]) {
-            if(!visited[it]) {
-                dfs(it,visited,adj,st);
-            }
-        }
-        st.push(node);
-    }
-     void revdfs(int node, vector<int>& visited, vector<int>adj[], vector<int>& res) {
-        visited[node] = 1;
-        res.push_back(node);
-        for(auto it: adj[node]) {
-            if(!visited[it]) {
-                revdfs(it,visited,adj,res);
-            }
-        }
-        
-    }
-    vector<vector<int>> tarjans(int V, vector<int> adj[])
-    {
-       vector<int>visited(V,0);
-       stack<int>st;
-       for(int i=0;i<V;i++) {
-           if(!visited[i]) {
-               dfs(i,visited,adj,st);
+    // DFS function for Tarjan's Algorithm
+    void DFS(int node , int timer , auto &vis , auto &st , auto &inStack, auto &adj) {
+       vis[node] = 1; 
+
+       // assign discovery time and low time
+       disc[node] = low[node] = ++timeCounter;
+
+       st.push(node);         // push into stack
+       inStack[node] = 1;     // mark as present in stack
+
+       // explore all neighbours
+       for(int v : adj[node]){
+           if(!vis[v]){
+               // recursive DFS call
+               DFS(v , timer + 1 , vis, st , inStack , adj);
+
+               // backtrack: update low-link value
+               low[node] = min(low[node] , low[v]);
+           } else {
+               // if neighbor is still in stack → back edge found
+               if(inStack[v]){
+                   low[node] = min(low[node] , disc[v]);
+               }
            }
        }
-       
-       vector<int>transpose[V];
-       for(int i=0;i<V;i++) {
-           visited[i] = 0;
-           for(auto it: adj[i]) {
-               transpose[it].push_back(i);
+
+       // if node is head of SCC (start of a strongly connected component)
+       if(disc[node] == low[node]){
+           vector<int> temp;
+
+           // pop all nodes belonging to this SCC
+           while(!st.empty() && st.top() != node){
+               auto top = st.top();
+               temp.push_back(top);
+               st.pop();
+               inStack[top] = 0;
            }
-       }
-       
-       vector<int>res;
-       vector<vector<int>>ans;
-       while(!st.empty()) {
-           int top = st.top();
+
+           // pop the last (head) node
+           auto top = node;
+           temp.push_back(top);
+           inStack[top] = 0;
            st.pop();
-           if(!visited[top]) {
-               revdfs(top,visited,transpose,res);
-                sort(res.begin(),res.end());
-                ans.push_back(res);
-           }
-           res.clear();
+
+           // sort the SCC for output
+           sort(temp.begin() , temp.end());    
+
+           ans.push_back(temp);  // add SCC to result
        }
-       sort(ans.begin(),ans.end());
-       return ans;
+    }
+
+    // Function to return all Strongly Connected Components in the graph
+    vector<vector<int>> tarjans(int V, vector<int> adj[]) {
+        disc.assign(V, 0);
+        low.assign(V, 0);
+
+        vector<int> vis(V , 0);        // visited array
+        stack<int> st;                 // stack for Tarjan's algorithm
+        vector<bool> inStack(V , 0);   // track nodes currently in stack
+
+        int timer = 0;
+        for(int i = 0; i < V ; i++){
+            if(!vis[i]){
+                 DFS(i , timer , vis , st , inStack , adj);
+            }
+        }
+
+        // sort all SCCs lexicographically
+        sort(ans.begin() , ans.end());
+        return ans;
     }
 };
