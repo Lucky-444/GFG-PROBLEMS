@@ -1,43 +1,46 @@
 class Solution {
   public:
-    int upperbound(vector<int> &arr,int x,int n){
-        int low=0,high=n-1;
-        int ans=n;
-        while(low<=high){
-            int mid = (low+high)/2;
-            if(arr[mid]>x){
-                ans=mid;
-                high = mid-1;
-            }
-            else{
-                low=mid+1;
-            }
-        }
-        return ans;
-    }
-    int countsmallequal(vector<vector<int>> &mat, int n,int m, int mid){
-        int cnt=0;
-        for(int i=0;i<n;i++){
-            cnt+= upperbound(mat[i],mid,m);
-        }
-        return cnt;
-    }
     int median(vector<vector<int>> &mat) {
         // code here
-          int n = mat.size();
+        // using priority_queue<method>> pq;
+        //min heap
+        int n = mat.size();
         int m = mat[0].size();
-        int low = INT_MAX, high=INT_MIN;
-        for(int i=0;i<n;i++){
-            low = min(low,mat[i][0]);
-            high = max(high,mat[i][m-1]);
+        
+        
+        
+        using T = vector<int>;
+        priority_queue<T , vector<T> , greater<>>pq; //{val , row ,col}
+        
+        int medianIndex = (n * m) / 2; 
+        
+        //first push all first elements into the pq
+        
+        for(int i = 0 ; i < n ; i++){
+            pq.push({mat[i][0] , i , 0});
         }
-        int req = (n*m)/2;
-        while(low<=high){
-            int mid= (low+high)/2;
-            int smallequal = countsmallequal(mat,n,m,mid);
-            if(smallequal<=req) low=mid+1;
-            else high=mid-1;
+        
+        int cnt = 0;
+        //now iterate on pq and apply the method
+        int res = -1;
+        while(cnt <= medianIndex){
+            auto top = pq.top();
+            pq.pop();
+            
+            int val = top[0] , r = top[1] , c = top[2] ;
+            res = val ;
+            
+            cnt ++;
+            // if more elements are left in the current
+            // row, push next
+            if(c + 1 < m){
+                pq.push({mat[r][c + 1] , r  , c + 1});
+            }
+            
+            
+            
         }
-        return low;
+        
+        return res;
     }
 };
