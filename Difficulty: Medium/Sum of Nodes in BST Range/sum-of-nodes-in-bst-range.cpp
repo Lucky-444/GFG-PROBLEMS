@@ -16,18 +16,23 @@ class Node {
 
 class Solution {
   public:
-      void solve(Node* root, int l, int h, int & sum){
-        if(!root) return;
+    void solve(Node *root , int low , int high , int &sum){
+        if(!root){
+            return ;
+        }
         
-        if(root->data>=l && root->data<=h ) sum += root->data;
+        if(root -> data >= low && root -> data <= high){
+            sum += root -> data ;
+        }
         
-        solve(root->left,l,h,sum);
-        solve(root->right,l,h,sum);
+        solve(root -> left , low, high , sum);
+        solve(root -> right , low , high , sum);
     }
-    int nodeSum(Node* root, int low, int high) {
+    int nodeSum(Node* root, int l, int r) {
         // code here
-         int sum = 0;
-        solve(root, low, high, sum);
+        int sum = 0;
+        solve(root , l , r , sum);
+        
         return sum;
     }
 };
