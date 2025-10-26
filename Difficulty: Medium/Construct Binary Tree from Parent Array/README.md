@@ -1,0 +1,12 @@
+<h2><a href="https://www.geeksforgeeks.org/problems/construct-binary-tree-from-parent-array/1">Construct Binary Tree from Parent Array</a></h2><h3>Difficulty Level : Difficulty: Medium</h3><hr><div class="problems_problem_content__Xm_eO"><p data-pm-slice="0 0 []"><span style="font-size: 14pt;">Given an array <strong>parent[]</strong> where each index represents a node and <strong>parent[i]</strong> gives the parent’s index, with <strong>-1</strong> indicating the root. Your task is to construct the binary tree in standard linked-node form (each node having left and right pointers) based on this parent–child relationship and return the root node.</span></p>
+<p><strong><span style="font-size: 18px;">Note: </span></strong><span style="font-size: 18px;">If two elements have the same parent, the one that appears first in the array will be the left child and the other is the right child. You don't need to print anything, the driver code will print the level order traversal of the returned root node to verify the output.</span></p>
+<p><strong><span style="font-size: 18px;">Examples:</span></strong></p>
+<pre><strong><span style="font-size: 18px;">Input: </span></strong><span style="font-size: 18px;">parent[] = [-1, 0, 0, 1, 1, 3, 5]
+<strong>Output: </strong>[0, 1, 2, 3, 4, N, N, 5, N, N, N, 6]<strong>
+Explanation: </strong>the tree generated will have a structure like
+<img src="https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/700180/Web/Other/blobid1_1754042816.webp" width="229" height="220"><br></span></pre>
+<pre><strong><span style="font-size: 18px;">Input: </span></strong><span style="font-size: 18px;">parent[] = [2, 0, -1]
+<strong>Output: </strong>[2, 0, N, 1]<strong>
+Explanation: </strong>the tree generated will have a structure like
+<img src="https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/700180/Web/Other/blobid0_1754042663.webp" width="181" height="221"></span></pre>
+<p><span style="font-size: 18px;"><strong>Constraints:</strong><br>1 ≤ parent.size() ≤ 10<sup>3</sup></span></p></div><p><span style=font-size:18px><strong>Company Tags : </strong><br><code>Amazon</code>&nbsp;<code>Microsoft</code>&nbsp;<code>Snapdeal</code>&nbsp;<br><p><span style=font-size:18px><strong>Topic Tags : </strong><br><code>Tree</code>&nbsp;<code>Data Structures</code>&nbsp;<code>Algorithms</code>&nbsp;
