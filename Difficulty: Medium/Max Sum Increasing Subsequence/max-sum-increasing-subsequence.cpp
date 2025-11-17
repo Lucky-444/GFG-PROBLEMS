@@ -1,12 +1,6 @@
-//{ Driver Code Starts
-#include <bits/stdc++.h>
-using namespace std;
-
-
-// } Driver Code Ends
 class Solution {
   public:
-      int solve(int i, int p, vector<int>& arr, vector<vector<int>>& dp) {
+    int solve(int i, int p, vector<int>& arr, vector<vector<int>>& dp) {
         if (i >= arr.size())
             return 0;
 
@@ -24,38 +18,12 @@ class Solution {
 
         return dp[i][p + 1] = max(pick, np);
     }
-    int maxSumIS(vector<int>& nums) {
-        // Your code goes here
-          int n = nums.size();
+    int maxSumIS(vector<int>&nums) {
+        // code here
+         // Your code goes here
+        int n = nums.size();
 
         vector<vector<int>> dp(n, vector<int>(n + 1, -1));
         return solve(0, -1, nums, dp);
     }
 };
-
-//{ Driver Code Starts.
-int main() {
-
-    int t;
-    cin >> t;
-    cin.ignore();
-
-    while (t-- > 0) {
-        string str;
-        getline(cin, str);
-
-        stringstream ss(str);
-        vector<int> arr;
-        int num;
-        while (ss >> num) {
-            arr.push_back(num);
-        }
-
-        Solution ob;
-        cout << ob.maxSumIS(arr) << endl;
-        cout << "~" << endl;
-    }
-    return 0;
-}
-
-// } Driver Code Ends
