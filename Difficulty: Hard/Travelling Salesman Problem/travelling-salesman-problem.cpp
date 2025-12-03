@@ -1,45 +1,42 @@
 class Solution {
   public:
-    int tsp(vector<vector<int>>& cost) {
-        // code here
-                int n=cost.size();
-        int N=1<<n;
-        const int INF=1e9;
-
-        vector<vector<int>> dp(N,vector<int>(n,INF));
+    int dp[16][(1 << 16) + 5];
+    int solve(int idx, int mask , auto &c){
+        int n = c.size();
         
-        dp[1][0]=0;
 
-        for(int mask=0;mask<N;mask++){
-            
-            for(int i=0;i<n;i++){
-                
-                if(!(mask & (1<<i))){
-                    continue;
-                } 
-                
-                if(dp[mask][i]==INF){
-                    continue;
-                }
-
-                for(int j=0;j<n;j++){
-                    
-                    if(mask & (1<<j)){
-                        continue;
-                    } 
-                    
-                    int newMask=mask | (1<<j);
-                    dp[newMask][j]=min(dp[newMask][j],dp[mask][i]+cost[i][j]);
-                }
+        if(mask == (1 << n) - 1){
+            //all are visited
+            if(idx == 0){
+                return 0;
+            }else{
+                return INT_MAX; 
             }
         }
-
-        int ans=INF;
         
-        for(int i=0;i<n;i++){
-            ans=min(ans,dp[(1<<n)-1][i]+cost[i][0]);
+        if(dp[idx][mask] != -1){
+            return dp[idx][mask]; 
         }
         
-        return ans;
+        
+        int  ans = INT_MAX ; 
+        
+        for(int j = 0 ; j < n ; j ++){
+            if(mask & (1 << j)) continue ; 
+            
+            int temp = solve(j , (mask | (1 << j)) , c);
+            
+            if(temp != INT_MAX){
+                ans = min(ans , temp + c[idx][j]) ; 
+            }
+            
+        }
+        
+        return dp[idx][mask] =  ans ;
+    }
+    int tsp(vector<vector<int>>& cost) {
+        // code here
+        memset(dp , -1 ,sizeof(dp));
+        return solve(0 , 0 , cost);
     }
 };
