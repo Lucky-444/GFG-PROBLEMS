@@ -1,42 +1,66 @@
-#include <bits/stdc++.h>
-using namespace std;
-
 class Solution {
-public:
-    string minWindow(string &s1, string &s2) {
-        int n = s1.size(), m = s2.size();
-        unordered_map<char, vector<int>> pos;
+  public:
+    bool check(string s,string t,int i,int j)
+    {   
+        int start = 0;
         
-        for (int i = 0; i < n; i++)
-            pos[s1[i]].push_back(i);
+        for(int k=i;k<=j;k++)
+        {
+            if(s[k] == t[start])
+            {
+                start++;
+            }
+        }   
         
-        string ans = "";
-        int minLen = INT_MAX;
+        return start >= t.length();
+    }
+  
+    string minWindow(string& str1, string& str2) {
+        int i=0;
+        int j=0;
+        int n = str1.length();
+        int ans = INT_MAX;
+        int first = 0;
+        int second = 0;
+        
+  
+        
+        while(j<n)
+        {
 
-        // try all starting indices of first character of s2 in s1
-        for (int start : pos[s2[0]]) {
-            int prev = start;
-            bool valid = true;
-            
-            // find positions for the rest of s2
-            for (int j = 1; j < m; j++) {
-                auto it = upper_bound(pos[s2[j]].begin(), pos[s2[j]].end(), prev);
-                if (it == pos[s2[j]].end()) {
-                    valid = false;
-                    break;
+            while(check(str1,str2,i,j))
+            {   
+                
+                if(ans > (j-i+1))
+                {
+                    first = i;
+                    second = j;
+                    ans = j-i+1;
                 }
-                prev = *it;
+                
+                i++;
             }
             
-            if (valid) {
-                int len = prev - start + 1;
-                if (len < minLen) {
-                    minLen = len;
-                    ans = s1.substr(start, len);
-                }
-            }
+            j++;
         }
         
-        return ans;
+        string ck = str1.substr(first,second-first+1);
+        
+        int start = 0;
+        
+        for(int k=0;k<=ck.length();k++)
+        {
+            if(ck[k] == str2[start])
+            {
+                start++;
+            }
+        }   
+        
+        if(start >= str2.length())
+        {
+            return ck;
+        }
+        
+        return "";
     }
 };
