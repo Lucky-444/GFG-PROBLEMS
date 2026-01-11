@@ -1,42 +1,56 @@
-#include <bits/stdc++.h>
-using namespace std;
-
 class Solution {
-public:
-    string minWindow(string &s1, string &s2) {
-        int n = s1.size(), m = s2.size();
-        unordered_map<char, vector<int>> pos;
+  public:
+    bool check_subequence(string &s1 , string &s2 , int i , int j){
+        int start = 0;
         
-        for (int i = 0; i < n; i++)
-            pos[s1[i]].push_back(i);
-        
-        string ans = "";
-        int minLen = INT_MAX;
-
-        // try all starting indices of first character of s2 in s1
-        for (int start : pos[s2[0]]) {
-            int prev = start;
-            bool valid = true;
-            
-            // find positions for the rest of s2
-            for (int j = 1; j < m; j++) {
-                auto it = upper_bound(pos[s2[j]].begin(), pos[s2[j]].end(), prev);
-                if (it == pos[s2[j]].end()) {
-                    valid = false;
-                    break;
-                }
-                prev = *it;
-            }
-            
-            if (valid) {
-                int len = prev - start + 1;
-                if (len < minLen) {
-                    minLen = len;
-                    ans = s1.substr(start, len);
-                }
+        for(int k = i ; k <= j ; k ++){
+            if(s1[k] == s2[start]){
+                start ++;
             }
         }
         
-        return ans;
+        return start >= s2.size();
+    }
+    string minWindow(string& s1, string& s2) {
+        // Code here
+        //Qn said minimum window subsequence
+        int n = s1.size();
+        int first = 0 , second = 0 ;
+        
+        int i = 0 , j = 0 , ans = INT_MAX ;
+        
+        
+        while(j < n){
+            
+            while(check_subequence(s1 , s2 ,i,  j)){
+                if(ans > j - i + 1){
+                    //if smaller length
+                    first = i ;
+                    second = j ;
+                    ans = j - i + 1;
+                }
+                
+                i ++;
+            }
+            
+            j ++; 
+        }
+        
+        //last check after traversal
+        string s = s1.substr(first , second - first + 1);
+        
+        int l = 0 ;
+        for(int k = 0 ; k <= s.length() ; k ++){
+            if(s[k] == s2[l]){
+                l ++;
+            }
+        }
+        
+        if(l >= s2.size()){
+            return s ; 
+        }
+        
+        return "";
+        
     }
 };
