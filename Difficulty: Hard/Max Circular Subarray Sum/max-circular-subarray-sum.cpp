@@ -2,7 +2,7 @@ class Solution {
   public:
     int maxCircularSum(vector<int> &v) {
         // code here
-           int total_sum = 0, max_sum = INT_MIN, min_sum = INT_MAX, pos_sum = 0,
+                int total_sum = 0, max_sum = INT_MIN, min_sum = INT_MAX, pos_sum = 0,
             neg_sum = 0;
         for (int i = 0; i < v.size(); i++) {
             total_sum += v[i];
