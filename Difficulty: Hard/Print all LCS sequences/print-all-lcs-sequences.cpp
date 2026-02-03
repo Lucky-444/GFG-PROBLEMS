@@ -19,8 +19,7 @@ public:
         mp[key] = true;
 
         if (s1[i - 1] == s2[j - 1]) {
-            s.push_back(s1[i - 1]);
-            dfs(s, i - 1, j - 1);
+            dfs(s + s1[i - 1], i - 1, j - 1);
         } else {
             if (dp[i - 1][j] >= dp[i][j - 1]) {
                 dfs(s, i - 1, j);
