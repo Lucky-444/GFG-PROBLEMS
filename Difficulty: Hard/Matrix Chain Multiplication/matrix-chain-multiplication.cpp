@@ -1,37 +1,26 @@
 class Solution {
   public:
-    int dp[205][205];
-    int solve(auto &arr , int i ,int j){
-        //base case
-        if(i + 1 == j){
-            //what is the base case see at last
-            //only 2 values left 
+    int dp[105][105];
+    int solve(int i , int j , vector<int>&arr){
+        if(i == j - 1){
             return 0;
         }
-        
         
         if(dp[i][j] != -1){
             return dp[i][j];
         }
         
-        //partition in between i , j
-        int ans = INT_MAX;  
-        for(int k = i + 1 ; k < j ;  k ++){
-            int mul = arr[i] * arr[k] * arr[j];
-            int next = solve(arr , i  ,k ) + solve(arr , k  , j);
-            
-            int oprn = mul + next;
-            
-            ans = min(ans , oprn);
+        int ans = INT_MAX;
+        for(int k = i + 1; k <= j - 1 ; k ++){
+            ans = min(ans , solve(i , k , arr) + solve(k , j , arr) + arr[i] * arr[j] * arr[k]);
         }
         
         return dp[i][j] =  ans;
-        
     }
     int matrixMultiplication(vector<int> &arr) {
         // code here
-        memset(dp , - 1 , sizeof(dp));
         int n = arr.size();
-        return solve(arr , 0 , n - 1);
+        memset(dp , -1 , sizeof(dp));
+        return solve(0 , n - 1, arr);
     }
 };
