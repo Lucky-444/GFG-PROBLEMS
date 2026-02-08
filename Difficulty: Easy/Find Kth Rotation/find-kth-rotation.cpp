@@ -1,18 +1,37 @@
 class Solution {
-  public:
+public:
     int findKRotation(vector<int> &arr) {
-        // Code Here
-        //first find the minimum value and its index
-        //the index is the kth rotation value
-        
-        int minimum = *min_element(arr.begin() , arr.end());
-        
-        for(int i = 0; i < arr.size() ; i++){
-            if(arr[i] == minimum){
-                return i;
+        int n = arr.size();
+        int low = 0, high = n - 1;
+
+        int ans = 0;
+        int mini = INT_MAX;
+
+        while (low <= high) {
+            int mid = (low + high) >> 1;
+
+            // Left half is sorted
+            if (arr[low] <= arr[mid]) {
+                // Check if this sorted part has a smaller element
+                if (arr[low] < mini) {
+                    mini = arr[low];
+                    ans = low;
+                }
+                // Move to right half
+                low = mid + 1;
+            }
+            // Right half is sorted
+            else {
+                // Check if mid is smaller
+                if (arr[mid] < mini) {
+                    mini = arr[mid];
+                    ans = mid;
+                }
+                // Move to left half
+                high = mid - 1;
             }
         }
-        
-        return 0;
+
+        return ans;
     }
 };
