@@ -1,32 +1,55 @@
 class Solution {
   public:
-   int n,m;
-   void solve(int i, int j, vector < vector < int >> & a, int n, vector < string > & ans, string move,
-    vector < vector < int >> & vis, int di[], int dj[]) {
-    if (i == n - 1 && j == n - 1) {
-      ans.push_back(move);
-      return;
+    vector<int> dx = {1, 0, 0, -1};   // D, L, R, U
+    vector<int> dy = {0, -1, 1, 0};
+    
+    int n, m;
+    vector<string> ans;
+    vector<vector<int>> vis;
+    
+    void solve(int i, int j, vector<vector<int>>& maze, string &move) {
+        
+        // Base case: reached destination
+        if(i == n - 1 && j == m - 1) {
+            ans.push_back(move);
+            return;
+        }
+        
+        string dir = "DLRU";
+        
+        for(int k = 0; k < 4; k++) {
+            int ni = i + dx[k];
+            int nj = j + dy[k];
+            
+            if(ni >= 0 && nj >= 0 && ni < n && nj < m 
+               && !vis[ni][nj] && maze[ni][nj] == 1) {
+                   
+                vis[ni][nj] = 1;
+                move.push_back(dir[k]);
+                
+                solve(ni, nj, maze, move);
+                
+                move.pop_back();      // backtrack
+                vis[ni][nj] = 0;      // unmark
+            }
+        }
     }
-    string dir = "DLRU";
-    for (int ind = 0; ind < 4; ind++) {
-      int nexti = i + di[ind];
-      int nextj = j + dj[ind];
-      if (nexti >= 0 && nextj >= 0 && nexti < n && nextj < n && !vis[nexti][nextj] && a[nexti][nextj] == 1) {
-        vis[i][j] = 1;
-        solve(nexti, nextj, a, n, ans, move + dir[ind], vis, di, dj);
-        vis[i][j] = 0;
-      }
-    }
-
-  }
-    vector<string> ratInMaze(vector<vector<int>>& mat) {
-        // code here
-      vector < string > ans;
-      int n = mat.size();
-      vector < vector < int >> vis(n, vector < int > (n, 0));
-      int di[] = {+1,0,0,-1};
-      int dj[] = {0,-1,+1,0};
-      if (mat[0][0] == 1) solve(0, 0, mat, n, ans, "", vis, di, dj);
-      return ans;
+    
+    vector<string> ratInMaze(vector<vector<int>>& maze) {
+        
+        n = maze.size();
+        m = maze[0].size();
+        
+        vis.assign(n, vector<int>(m, 0));
+        ans.clear();
+        
+        if(maze[0][0] == 0) return ans;
+        
+        string temp = "";
+        
+        vis[0][0] = 1;     
+        solve(0, 0, maze, temp);
+        
+        return ans;
     }
 };
