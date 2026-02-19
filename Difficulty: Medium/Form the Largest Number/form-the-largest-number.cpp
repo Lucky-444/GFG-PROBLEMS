@@ -1,10 +1,8 @@
-// User function template for C++
-#include<bits/stdc++.h>
 class Solution {
   public:
-    
     string findLargest(vector<int> &arr) {
         // code here
+                // code here
         vector<string> nums;
         for (int num : arr) {
             nums.push_back(to_string(num));
