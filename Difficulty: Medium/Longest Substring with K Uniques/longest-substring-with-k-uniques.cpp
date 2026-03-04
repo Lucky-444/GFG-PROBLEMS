@@ -9,7 +9,7 @@ class Solution {
         
         while(j < n){
             mp[s[j]] ++;
-            
+            //Make WIndow Valid 
             while(mp.size() > k){
                 mp[s[i]] -- ;
                 
@@ -19,7 +19,7 @@ class Solution {
                 
                 i ++;
             }
-            
+            //Condition Given Exactly K size 
             if(mp.size() == k){
                 ans = max(ans , j - i + 1);
             }
