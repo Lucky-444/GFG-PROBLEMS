@@ -1,38 +1,43 @@
 class Solution {
   public:
-    string smallestWindow(string &s, string &p) {
+    string minWindow(string &s1, string &s2) {
         // code here
-         // code here
-        vector<int>mp(256,0);
-        int sIndex=-1;
-        int minLen=INT_MAX;
-        for(int i=0;i<p.size();i++)
+        int n = s1.length(), m = s2.length() ;
+        
+        unordered_map<char,int> mp;
+        int dist = 0;
+        for(auto ch : s2){ 
+            mp[ch]++;
+           
+        } 
+        
+        dist = mp.size();
+        
+        unordered_map<char,int> charcnts; 
+        int st = 0 ;
+        int size = n;
+        int start = -1 , end = -1;
+        int matchCount =0;
+        for(int ed = 0; ed < n; ed++) 
         {
-            mp[p[i]]++;
-        }
-        int c=0;
-        int m=p.size();
-        for(int j=0,i=0;j<s.size();j++)
-        {
-            if(mp[s[j]]>0)
-            c++;
-            mp[s[j]]--;
-            while(c==m)
-            {
-                if(j-i+1<minLen)
+            charcnts[s1[ed]]++ ;
+            
+            if(mp[s1[ed]] == charcnts[s1[ed]]) matchCount++ ;
+            
+            if(matchCount == dist) {
+                while((charcnts[s1[st]] > mp[s1[st]])) 
                 {
-                    sIndex=i;
-                    minLen=j-i+1;
+                    charcnts[s1[st]]--;
+                    st++;
                 }
-                mp[s[i]]++;
-                if(mp[s[i]]>0)
-                c--;
-                i++;
-                
+                if((ed - st + 1) < size) 
+                {
+                    size = ed - st + 1; 
+                    start = st ;
+                    end = ed ;
+                }
             }
         }
-        if(sIndex==-1) return "";
-        else
-        return s.substr(sIndex,minLen); 
+        return (start == -1) ? "" : s1.substr(start,size) ;
     }
 };
