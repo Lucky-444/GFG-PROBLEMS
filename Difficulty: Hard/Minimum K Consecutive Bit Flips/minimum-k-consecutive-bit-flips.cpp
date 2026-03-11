@@ -1,0 +1,28 @@
+class Solution {
+  public:
+    int kBitFlips(vector<int>& arr, int k) {
+        // code here
+                
+int n = arr.size();
+        int flips = 0;
+        int flipped = 0;
+        std::queue<int> queue;
+
+        for (int i = 0; i < n; i++) {
+            if (!queue.empty() && queue.front() == i) {
+                queue.pop();
+                flipped ^= 1;
+            }
+
+            if ((arr[i] ^ flipped) == 0) {
+                if (i + k > n) return -1;
+
+                flips++;
+                queue.push(i + k);
+                flipped ^= 1;
+            }
+        }
+        return flips;
+        
+    }
+};
