@@ -1,112 +1,112 @@
+class DSU{
+    public : 
+    vector<int>parent , rank;
+    int components;
+    
+    DSU(int n){
+        parent.resize(n , 0);
+        rank.resize(n , 1);
+        
+        iota(parent.begin() , parent.end() , 0);
+        components = n;
+    }
+    
+    int Find(int u){
+        return u == parent[u] ? u : parent[u] = Find(parent[u]);
+    }
+    
+    void Union(int u , int v){
+        u = Find(u);
+        v = Find(v);
+        
+        if(u == v){
+            return ;
+        }
+        
+        if(rank[u] < rank[v]){
+            parent[u] = v;
+        }else if(rank[u] > rank[v]){
+            parent[v] = u;
+        }else{
+            parent[v] = u;
+            rank[u] ++;
+        }
+        
+        components --;
+    }
+    
+};
+
 class Solution {
   public:
-    class dsu {
-        vector<int> parent, size;
-    public:
-        dsu(int n) {
-            parent.resize(n + 1);
-            size.resize(n + 1);
-    
-            for (int i = 0; i <= n; i++) {
-                parent[i] = i;
-                size[i] = 1;
-            }
-        }
-    
-        int findpar(int node) {
-            if (parent[node] == node) {
-                return node;
-            }
-            return parent[node] = findpar(parent[node]);
-        }
-    
-        void unionbysize(int a, int b) {
-            int pa = findpar(a);
-            int pb = findpar(b);
-    
-            if (pa == pb) return;
-    
-            if (size[pa] > size[pb]) {
-                parent[pb] = pa;
-                size[pa] += size[pb];
-            } else {
-                parent[pa] = pb;
-                size[pb] += size[pa];
-            }
-        }
-    
-        bool isconnected(int a, int b) {
-            return findpar(a) == findpar(b);
-        }
-    };
-    
-    
-    int secondMST(int V, vector<vector<int>> &edges) {
+    using ll = long long;
+    using P = pair<int , pair<int , int>>;
+    int secondMST(int n, vector<vector<int>> &edges) {
         // code here
+        vector<P>vec;
         
-        dsu ds(V);
-        int cnt=0,tot=0;
-        
-        vector<pair<int,pair<int,int>>> arr;
-        
-        for(auto &it:edges){
-            arr.push_back({it[2],{it[0],it[1]}});
+        for(auto it : edges){
+            vec.push_back({it[2] , {it[0] , it[1]}});
         }
         
-        sort(arr.begin(),arr.end());
+        sort(vec.begin() , vec.end());
         
-        set<pair<int,int>> st;
+        ll ans = 0;
+        DSU ds(n);
+        ll cnt = 0;
+        set<pair<int , int>>st;
         
-        for(auto &it:arr){
-            int wt=it.first,u=it.second.first,v=it.second.second;
-            if(!ds.isconnected(u,v)){
-                cnt++;
-                ds.unionbysize(u,v);
-                tot+=wt;
-                st.insert({u,v});
+        for(auto it : vec){
+            ll u = it.second.first;
+            ll v = it.second.second;
+            ll wt = it.first;
+            
+            if(ds.Find(u) != ds.Find(v)){
+                ds.Union(u , v);
+                ans += wt;
+                cnt ++;
+                st.insert({u , v});
             }
             
         }
         
-        if(cnt!=V-1){
+        if(cnt != n - 1){
             return -1;
         }
         
-        int sec=INT_MAX;
-        
-        for(auto &it:st){
-            int u=it.first,v=it.second;
-            int cur=0,cnt=0;
-            dsu ds1(V);
-            
-            for(auto &it1:arr){
-                int wt=it1.first,u1=it1.second.first,v1=it1.second.second;
-                
-                if(u==u1 && v==v1){
+       ll second = LLONG_MAX;
+
+        for(auto it : st){
+
+            int u = it.first;
+            int v = it.second;
+
+            DSU ds2(n);
+            ll cost = 0;
+            int edgesUsed = 0;
+
+            for(auto it2 : vec){
+
+                int wt = it2.first;
+                int u1 = it2.second.first;
+                int v1 = it2.second.second;
+
+                if((u1 == u && v1 == v) || (u1 == v && v1 == u)){
                     continue;
                 }
-                
-                if(!ds1.isconnected(u1,v1)){
-                    cnt++;
-                    ds1.unionbysize(u1,v1);
-                    cur+=wt;
+
+                if(ds2.Find(u1) != ds2.Find(v1)){
+                    ds2.Union(u1 , v1);
+                    cost += wt;
+                    edgesUsed++;
                 }
-                
             }
-            
-            if(cnt==V-1 && cur>tot){
-                sec=min(sec,cur);
+
+            if(edgesUsed == n-1 && cost > ans){
+                second = min(second , cost);
             }
-            
-            
         }
-        
-        if(sec!=INT_MAX){
-            return sec;
-        }
-        
-        return -1;
-        
-        
+
+        return second == LLONG_MAX ? -1 : second;
     }
 };
