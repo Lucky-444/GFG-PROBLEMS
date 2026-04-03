@@ -1,29 +1,30 @@
 class Solution {
   public:
-    // Function to find a continuous subarray with the given sum
-    vector<int> subarraySum(vector<int>& nums, int targetSum) {
-        int n = nums.size();
-        int currentSum = 0;
-        int start = 0;
-    
-        // Use a sliding window approach
-        for (int end = 0; end < n; end++) {
-            currentSum += nums[end];
-    
-            // Shrink the window from the left until the current sum is less than or equal to the target sum
-            while (currentSum > targetSum && start <= end) {
-                currentSum -= nums[start];
-                start++;
+    vector<int> subarraySum(vector<int> &arr, int target) {
+        unordered_map<long long, int> mp;
+        
+        long long sum = 0;
+        
+        // Important: prefix sum 0 at index -1
+        mp[0] = -1;
+        
+        for (int i = 0; i < arr.size(); i++) {
+            sum += arr[i];
+            
+            // check if subarray exists
+            if (mp.find(sum - target) != mp.end()) {
+                int start = mp[sum - target] + 1;
+                int end = i;
+                
+                return {start + 1, end + 1}; // 1-based indexing
             }
-    
-            // If the current sum is equal to the target sum, return the indices of the subarray
-            if (currentSum == targetSum) {
-                return {start + 1, end + 1}; // Return 1-based indices as per the problem statement (convention)
+            
+            // store only first occurrence (important for leftmost)
+            if (mp.find(sum) == mp.end()) {
+                mp[sum] = i;
             }
         }
-    
-        // If no such subarray exists, return {-1}
+        
         return {-1};
     }
-
 };
