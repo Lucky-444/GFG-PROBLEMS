@@ -2,16 +2,17 @@ class Solution {
   public:
     int longestKSubstr(string &s, int k) {
         // code here
-        int i = 0 , j = 0 , n = s.size();
-        unordered_map<char , int>mp; 
-        int ans = -1;
+        //easy 
+        int n = s.size();
         
+        int i = 0 , j = 0 , ans = -1;
+        unordered_map<char ,int>mp;
         
         while(j < n){
             mp[s[j]] ++;
-            //Make WIndow Valid 
+            
             while(mp.size() > k){
-                mp[s[i]] -- ;
+                mp[s[i]] --;
                 
                 if(mp[s[i]] == 0){
                     mp.erase(s[i]);
@@ -19,13 +20,14 @@ class Solution {
                 
                 i ++;
             }
-            //Condition Given Exactly K size 
+            
             if(mp.size() == k){
                 ans = max(ans , j - i + 1);
             }
+            
             j ++;
         }
         
-        return ans; 
+        return ans;
     }
 };
