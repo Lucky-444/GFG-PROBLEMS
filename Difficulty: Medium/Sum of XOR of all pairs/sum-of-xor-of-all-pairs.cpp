@@ -1,12 +1,10 @@
-
-
 class Solution {
   public:
-    // Returns sum of bitwise OR
-    // of all pairs
-    long long int sumXOR(int arr[], int n) {
+    long long sumXOR(vector<int> &arr) {
+        // code here
         // Complete the function
         long long int ans = 0;
+        int n = arr.size();
 
         // Check each bit position
         for(int bit = 0; bit < 32; bit++) {
