@@ -1,21 +1,21 @@
-/* A binary tree node
-
+/*
+Definition for Node
 struct Node
 {
     int data;
-    struct Node* left;
-    struct Node* right;
+    Node* left;
+    Node* right;
 
     Node(int x){
         data = x;
-        left = right = NULL;
+        left = right = nullptr;
     }
 };
- */
+*/
 
 class Solution {
   public:
-    bool solve(Node *a , Node *b){
+   bool solve(Node *a , Node *b){
         if(!a && !b){
             return true;
         }
@@ -30,9 +30,9 @@ class Solution {
         
         return solve(a -> left , b -> left) && solve(a -> right , b -> right);
     }
-    // Function to check if S is a subtree of tree T.
-    bool isSubTree(Node* T, Node* S) {
-        // Your code here
+    bool isSubTree(Node *T, Node *S) {
+        // code here
+          // Your code here
         if(!T){
             return false;
         }
