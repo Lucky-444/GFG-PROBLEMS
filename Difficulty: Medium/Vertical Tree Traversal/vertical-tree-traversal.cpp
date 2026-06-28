@@ -22,7 +22,7 @@ class Solution {
         map<int , vector<int>>mp;
         
         queue<tuple<Node* , int>>q;
-        q.push({root , 0});
+        q.push({root , 0}); //push root node to queue
         
         while(!q.empty()){
             auto [node , col] = q.front();
