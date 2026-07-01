@@ -1,8 +1,6 @@
 class Solution {
 public:
-    int solve(int idx, int target,
-              vector<int>& arr,
-              vector<vector<int>>& dp) {
+    int solve(int idx, int target,vector<int>& arr, vector<vector<int>>& dp) {
 
         if(idx == arr.size())
             return target == 0;
