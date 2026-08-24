@@ -1,18 +1,25 @@
 class Solution {
-  public:
+public:
+    const long long MOD = 1e9 + 7;
+
     int prefixStrings(int N) {
-        // code here
-        vector<int> v(N+1,0);
-        v[0]=1;
-        v[1]=1;
-        int m= 1e9+7;
-        for (int i = 2; i <=N; ++i)
-        {
-            for(int j=0;j<i; j++){
-                v[i] = (v[i]+ (1LL *v[j]* v[i-1-j])%m)%m;
-            }
+
+        vector<long long> inv(N + 2);
+
+        inv[1] = 1;
+
+        for (int i = 2; i <= N + 1; i++) {
+            inv[i] = MOD - (MOD / i) * inv[MOD % i] % MOD;
         }
 
-        return v[N];
+        long long ans = 1;
+
+        for (long long i = 1https://www.geeksforgeeks.org/ai-ml-and-data-science-tutorial-learn-ai-ml-and-data-science/; i <= N; i++) {
+
+            ans = ans * (4 * i - 2) % MOD;
+            ans = ans * inv[i + 1] % MOD;
+        }
+
+        return ans;
     }
 };
