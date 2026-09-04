@@ -1,27 +1,30 @@
 class Solution {
   public:
-    using ll = long long;
     int dp[60];
     int solve(int n){
-        if(n == 1){
-            return 1;
+        if(n == 0 || n == 1){
+            return 0;
         }
         
         if(dp[n] != -1){
             return dp[n];
         }
         
-        int res = 0;
+        int ans = 0;
         
-        for(int i = 1 ; i <= n / 2 ; i ++){
-            res = max({res , i * (n - i) , i * (solve(n - i))});
+        for(int i = 1 ; i < n ; i ++){
+            //take direct Product
+            int directProduct = i * (n - i);
+            
+            int recursiveBreak = i * (solve(n - i));
+            
+            ans = max({ans , directProduct , recursiveBreak});
         }
         
-        return dp[n] = res;
+        return dp[n] = ans;
     }
     int maxProduct(int n) {
         // code here
-        if (n == 2 || n == 3) return n -1;
         memset(dp , -1 , sizeof(dp));
         return solve(n);
     }
