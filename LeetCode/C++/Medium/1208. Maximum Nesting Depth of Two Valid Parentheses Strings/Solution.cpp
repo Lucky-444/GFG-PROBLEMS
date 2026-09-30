@@ -3,17 +3,16 @@ public:
     vector<int> maxDepthAfterSplit(string seq) {
         vector<int>ans;
 
-        int depth = 0;
+        stack<char>st;
 
         for(auto ch : seq){
             if(ch == '('){
-                depth ++;
+                st.push('(');
+                ans.push_back(st.size() % 2);
             }
-
-            ans.push_back(depth % 2);
-
-            if(ch == ')'){
-                depth --;
+            else{
+                ans.push_back(st.size() % 2);
+                st.pop();
             }
         }
 
