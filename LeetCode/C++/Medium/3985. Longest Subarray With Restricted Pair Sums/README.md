@@ -4,6 +4,9 @@
 
 ![Difficulty](https://img.shields.io/badge/Difficulty-Medium-orange) ![Language](https://img.shields.io/badge/Language-C++-blue)
 
+### 💡 Tags
+Array, Hash Table, Sliding Window
+
 ### 🚀 Performance
 - **Runtime:** 22 ms
 - **Memory:** 27.4 MB
